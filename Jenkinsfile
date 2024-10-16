@@ -2,17 +2,21 @@ node {
     checkout scm
     withEnv(['HOME=.']) {          
         docker.image('docker:18.09-dind').withRun(""" --privileged  """) { c ->
-            docker.withRegistry( '','credentials-id') {    
-                docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
-                    stage ('Build') {
-                        sh """
-                            cd app
-                            docker-compose --host tcp://docker:2375 build
-                            docker --host tcp://docker:2375 images
-                            cd ..
-                        """
-                    }
-                    stage ('Upload') {
+            // Remove docker.withRegistry since we will use manual login
+            docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
+                
+                stage ('Build') {
+                    sh """
+                        cd app
+                        docker-compose --host tcp://docker:2375 build
+                        docker --host tcp://docker:2375 images
+                        cd ..
+                    """
+                }
+                
+                stage ('Upload') {
+                    // Use Docker Hub credentials for login
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-token', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                             cp -RT app /app/src/workspace
                             cd /app/src/workspace
@@ -34,14 +38,25 @@ node {
 
                             echo 'new Version: '$version_new
 
+                            // Docker login using credentials
+                            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+                            // Tag and push Docker image
+                            docker tag $DOCKER_IMAGE_CLI $DOCKER_USERNAME/$REPO_NAME:$version_new
+                            docker push $DOCKER_USERNAME/$REPO_NAME:$version_new
+                            
+                            // Docker logout
+                            docker logout
+
+                            // Final steps for iectl
                             iectl publisher standalone-app version create --appname $APP_NAME --changelogs "new release" --yamlpath "./app/docker-compose.prod.yml" --versionnumber $version_new 
--n '{"hello-edge":[{"name":"hello-edge","protocol":"HTTP","port":"80","headers":"","rewriteTarget":"/"}]}' -s 'hello-edge' -t 'FromBoxReverseProxy' -u "hello-edge" -r "/"
+                            -n '{"hello-edge":[{"name":"hello-edge","protocol":"HTTP","port":"80","headers":"","rewriteTarget":"/"}]}' -s 'hello-edge' -t 'FromBoxReverseProxy' -u "hello-edge" -r "/"
 
                             iectl publisher app-project upload catalog --appname $APP_NAME -v $version_new
                         """
-                    }  
-                }        
-            }
+                    }
+                }
+            }        
         }
     }
 }
