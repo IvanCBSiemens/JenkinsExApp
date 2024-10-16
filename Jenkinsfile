@@ -8,6 +8,7 @@ node {
                 stage ('Build') {
                     sh """
                         cd app
+                        echo "$DOCKER_IMAGE_CLI"
                         docker-compose --host tcp://docker:2375 build
                         docker --host tcp://docker:2375 images
                         cd ..
