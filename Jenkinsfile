@@ -1,7 +1,7 @@
 node {
     checkout scm
     withEnv(['HOME=.']) {          
-        docker.image('exampleimage').withRun(""" --privileged  """) { c ->
+        docker.image('hello-edge:v1.0.0').withRun(""" --privileged  """) { c ->
             // Remove docker.withRegistry since we will use manual login
             docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
                 
