@@ -6,9 +6,17 @@ node {
             echo "DOCKER_IMAGE_CLI -> $DOCKER_IMAGE_CLI"
 
             docker.withRegistry('', 'credentials-id') {    
+                
+                echo "1"
+
                 docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
                     
+                    echo "2"
+
                     stage('Build') {
+
+                        echo "3"
+
                         sh """
                             cd app
                             docker-compose --host tcp://docker:2375 build
