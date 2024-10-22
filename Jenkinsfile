@@ -39,7 +39,7 @@ node {
                             iectl publisher workspace init
                             iectl publisher docker-engine v -u http://docker:2375
                             
-                            iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password ${PSWD}
+                            iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password '$PSWD'
 
                             iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath ${ICON_PATH} --appname ${APP_NAME}
 
