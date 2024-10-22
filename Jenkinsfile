@@ -8,6 +8,7 @@ node {
                 echo "DOCKER_IMAGE_CLI -> $DOCKER_IMAGE_CLI"
 
                 def trimmedImage = "$DOCKER_IMAGE_CLI".trim()
+                def trimmedIcon = "$ICON_PATH".trim()
 
                 echo "1"
 
@@ -41,7 +42,6 @@ node {
                             
                             iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password '$PSWD'
 
-                            def trimmedIcon = "$ICON_PATH".trim()
 
                             iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath trimmedIcon --appname ${APP_NAME}
 
