@@ -1,7 +1,10 @@
 node {
     checkout scm
     withEnv(['HOME=.']) {          
-        docker.image('docker:18.09-dind').withRun(""" --privileged  """) { c ->
+        docker.image('docker:18.09-dind').withRun(""" --privileged  """) {  
+ 
+            echo "DOCKER_IMAGE_CLI -> $DOCKER_IMAGE_CLI"
+
             docker.withRegistry('', 'credentials-id') {    
                 docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
                     
