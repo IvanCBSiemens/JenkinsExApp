@@ -43,7 +43,7 @@ node {
                             iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password '$PSWD'
 
 
-                            iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath trimmedIcon --appname ${APP_NAME}
+                            iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath ${trimmedIcon} --appname ${APP_NAME}
 
                             version=\$(iectl publisher standalone-app version list -a ${APP_NAME} -k "versionNumber" | python3 ../getAppVersion.py)
 
