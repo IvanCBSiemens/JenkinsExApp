@@ -38,6 +38,8 @@ node {
 
                             iectl config add publisher --name "publisherdev" --dockerurl "http://docker:2375" --workspace "/app/src/workspace"
                             iectl publisher workspace init
+                            cd ..
+
                             iectl publisher docker-engine v -u http://docker:2375
                             
                             iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password '$PSWD'
