@@ -8,6 +8,7 @@ node {
             docker.withRegistry('', 'credentials-id') {    
                 
                 echo "1"
+                echo "c.id -> $c.id"
 
                 docker.image('$DOCKER_IMAGE_CLI').inside(""" --link ${c.id}:docker --privileged -u root """) {
                     
