@@ -35,9 +35,9 @@ node {
                             export IE_SKIP_CERTIFICATE=true
                             export EDGE_SKIP_TLS=1
 
-                            iectl config add publisher --name "publisherdev" --dockerurl "http://127.0.0.1:2375" --workspace "/app/src/workspace"
+                            iectl config add publisher --name "publisherdev" --dockerurl "tcp://docker:2375" --workspace "/app/src/workspace"
                             iectl publisher workspace init
-                            iectl publisher docker-engine v -u http://localhost:2375
+                            iectl publisher docker-engine v -u tcp://docker:2375
                             
                             iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password ${PSWD}
 
