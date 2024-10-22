@@ -5,7 +5,7 @@ node {
 
             docker.withRegistry('', 'credentials-id') { 
                 
-                echo "c.id -> $c.id"
+                echo "DOCKER_IMAGE_CLI -> $DOCKER_IMAGE_CLI"
 
                 echo "1"
 
