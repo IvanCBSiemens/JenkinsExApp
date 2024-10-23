@@ -44,9 +44,9 @@ node {
                             
                             iectl config add iem --name "iemdev" --url ${IEM_URL} --user ${USER_NAME} --password '$PSWD'
 
-                            iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath "develop.png" --appname ${APP_NAME}
+                            iectl publisher standalone-app create --reponame ${REPO_NAME} --appdescription "uploaded using Jenkins" --iconpath ${trimmedIcon} --appname ${APP_NAME}
 
-                            version=\$(iectl publisher standalone-app version list -a ${APP_NAME} -k "versionNumber" | python3 ../getAppVersion.py)
+                            version=\$(iectl publisher standalone-app version list -a ${APP_NAME} -k "versionNumber" | python3 getAppVersion.py)
 
                             version_new=\$(echo \$version | awk -F. -v OFS=. 'NF==1{print ++\$NF}; NF>1{if(length(\$NF+1)>length(\$NF))\$(NF-1)++; \$NF=sprintf("%0*d", length(\$NF), (\$NF+1)%(10^length(\$NF))); print}')
                             echo 'new Version: '\$version_new
