@@ -12,6 +12,7 @@ RUN mkdir -p /app/src/workspace
 WORKDIR /app/src/workspace
 COPY develop.png /app/src
 COPY getAppVersion.py /app/src
+COPY docker-compose.prod.yml /app/src
 RUN iectl version
 RUN iectl publisher workspace init
 
