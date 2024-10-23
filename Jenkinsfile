@@ -51,7 +51,7 @@ node {
                             version_new=\$(echo \$version | awk -F. -v OFS=. 'NF==1{print ++\$NF}; NF>1{if(length(\$NF+1)>length(\$NF))\$(NF-1)++; \$NF=sprintf("%0*d", length(\$NF), (\$NF+1)%(10^length(\$NF))); print}')
                             echo 'new Version: '\$version_new
 
-                            iectl publisher standalone-app version create --appname ${APP_NAME} --changelogs "new release" --yamlpath "./docker-compose.prod.yml" --versionnumber \$version_new 
+                            iectl publisher standalone-app version create --appname ${APP_NAME} --changelogs "new release" --yamlpath "./app/docker-compose.prod.yml" --versionnumber \$version_new 
                             -n '{"hello-edge":[{"name":"hello-edge","protocol":"HTTP","port":"80","headers":"","rewriteTarget":"/"}]}' -s 'hello-edge' -t 'FromBoxReverseProxy' -u "hello-edge" -r "/"
 
                             iectl publisher app-project upload catalog --appname ${APP_NAME} -v \$version_new
